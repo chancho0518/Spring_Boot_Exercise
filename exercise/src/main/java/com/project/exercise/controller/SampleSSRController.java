@@ -23,6 +23,6 @@ public class SampleSSRController {
 
         model.addAttribute("dataList", sampleDataList);
 
-        return "samplePage";
+        return "SSRExam";
     }
 }
