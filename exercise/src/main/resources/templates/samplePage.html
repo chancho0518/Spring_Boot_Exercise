@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <title>Smaple page</title>
+</head>
+<body>
+
+<h1>Sample Page!!!</h1>
+<div>
+
+    <!-- Thymeleaf를 사용하여 데이터 랜더링 -->
+    <div th:each="data: ${dataList}" >
+        <p th:text="${data.id + ': ' + data.name}"> </p>
+    </div>
+
+    <!-- 데이터가 없는 경우 처리 -->
+    <div th:if="${dataList.size() == 0}">
+        <p>No Data Available!!</p>
+    </div>
+
+</div>
+
+</body>
+</html>
