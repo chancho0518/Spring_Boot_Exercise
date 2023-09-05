@@ -19,7 +19,7 @@ public class ClassA {
     }
 
     public void sayHello() {
-        String message = classB.sayHello() + " 그리고, 난 A!!!";
+        String message = classB.sayHello() + ", 그리고 난 A!!!";
         System.out.println(message);
     }
 }
