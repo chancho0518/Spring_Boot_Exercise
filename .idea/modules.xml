@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/02. Spring Boot.iml" filepath="$PROJECT_DIR$/.idea/02. Spring Boot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/miniProject.main.iml" filepath="$PROJECT_DIR$/.idea/modules/miniProject.main.iml" />
     </modules>
   </component>
 </project>
