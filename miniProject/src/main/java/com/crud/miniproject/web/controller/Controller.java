@@ -1,5 +1,6 @@
 package com.crud.miniproject.web.controller;
 
+import com.crud.miniproject.repository.ItemRepository;
 import com.crud.miniproject.web.dto.Item;
 import com.crud.miniproject.web.dto.ItemBody;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class Controller {
 
+    private ItemRepository itemRepository;
+
+    public Controller(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
+
     private static int serialItemId = 1;
     private List<Item> items = new ArrayList<>(Arrays.asList(
             new Item(String.valueOf(serialItemId++), "Apple iPhone 12Pro Max", "Smartphone", 1490000, "A14 Bionic", "512GB"),
@@ -24,15 +31,16 @@ public class Controller {
 
     @GetMapping("/items")
     public List<Item> findAllItem() {
-        return items;
+        // return items;
+        return itemRepository.findAllItems();
     }
 
     @PostMapping("/items")
     public String registerItem(@RequestBody ItemBody itemBody) {
-        Item newitem = new Item(serialItemId++, itemBody);
-        items.add(newitem);
+        Item newItem = new Item(serialItemId++, itemBody);
+        items.add(newItem);
 
-        return "ID: " + newitem.getId();
+        return "ID: " + newItem.getId();
     }
 
     @GetMapping("/items/{id}")
