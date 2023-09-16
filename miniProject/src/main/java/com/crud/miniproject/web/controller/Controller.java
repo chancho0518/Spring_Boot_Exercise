@@ -1,5 +1,6 @@
 package com.crud.miniproject.web.controller;
 
+import com.crud.miniproject.repository.ItemEntity;
 import com.crud.miniproject.repository.ItemRepository;
 import com.crud.miniproject.web.dto.Item;
 import com.crud.miniproject.web.dto.ItemBody;
@@ -31,16 +32,17 @@ public class Controller {
 
     @GetMapping("/items")
     public List<Item> findAllItem() {
-        // return items;
-        return itemRepository.findAllItems();
+        List<ItemEntity> itemEntities = itemRepository.findAllItems();
+
+        return itemEntities.stream().map(Item::new).collect(Collectors.toList());
     }
 
     @PostMapping("/items")
     public String registerItem(@RequestBody ItemBody itemBody) {
-        Item newItem = new Item(serialItemId++, itemBody);
-        items.add(newItem);
+        ItemEntity itemEntity = new ItemEntity(null, itemBody.getName(), itemBody.getType(), itemBody.getPrice(), itemBody.getSpec().getCpu(), itemBody.getSpec().getCapacity());
+        Integer itemId = itemRepository.saveItem(itemEntity);
 
-        return "ID: " + newItem.getId();
+        return "ID: " + itemId;
     }
 
     @GetMapping("/items/{id}")
@@ -88,15 +90,21 @@ public class Controller {
 
     @PutMapping("/items/{id}")
     public Item updateItem(@PathVariable String id, @RequestBody ItemBody itemBody) {
-        Item itemFounded = items.stream()
-                .filter((item -> item.getId().equals(id)))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException());
+//        Item itemFounded = items.stream()
+//                .filter((item -> item.getId().equals(id)))
+//                .findFirst()
+//                .orElseThrow(() -> new RuntimeException());
+//
+//        items.remove(itemFounded);
+//
+//        Item itemUpdated = new Item(Integer.valueOf(id), itemBody);
+//        items.add(itemUpdated);
 
-        items.remove(itemFounded);
+        Integer idInt = Integer.valueOf(id);
+        ItemEntity itemEntity = new ItemEntity(idInt, itemBody.getName(), itemBody.getType(), itemBody.getPrice(), itemBody.getSpec().getCpu(), itemBody.getSpec().getCapacity());
 
-        Item itemUpdated = new Item(Integer.valueOf(id), itemBody);
-        items.add(itemUpdated);
+        ItemEntity itemEntityUpdated = itemRepository.updateItem(idInt, itemEntity);
+        Item itemUpdated = new Item(itemEntityUpdated);
 
         return itemUpdated;
     }
