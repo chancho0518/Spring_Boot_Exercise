@@ -2,6 +2,7 @@ package com.crud.miniproject.web.controller;
 
 import com.crud.miniproject.repository.ItemEntity;
 import com.crud.miniproject.repository.ItemRepository;
+import com.crud.miniproject.service.ItemService;
 import com.crud.miniproject.web.dto.Item;
 import com.crud.miniproject.web.dto.ItemBody;
 import org.springframework.web.bind.annotation.*;
@@ -16,96 +17,45 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class Controller {
 
-    private ItemRepository itemRepository;
+    private ItemService itemService;
 
-    public Controller(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
+    public Controller(ItemService itemService) {
+        this.itemService = itemService;
     }
-
-    private static int serialItemId = 1;
-    private List<Item> items = new ArrayList<>(Arrays.asList(
-            new Item(String.valueOf(serialItemId++), "Apple iPhone 12Pro Max", "Smartphone", 1490000, "A14 Bionic", "512GB"),
-            new Item(String.valueOf(serialItemId++), "Samsung Galaxy S21 Ultra", "Smartphone", 1690000, "Exynos 2100", "256GB"),
-            new Item(String.valueOf(serialItemId++), "Google Pixel 6 Pro", "Smartphone", 1290000, "Google Tensor", "128GB"),
-            new Item(String.valueOf(serialItemId++), "Dell XPS 15", "Laptop", 2290000, "Intel Core 9", "1TB SSD")
-    ));
 
     @GetMapping("/items")
     public List<Item> findAllItem() {
-        List<ItemEntity> itemEntities = itemRepository.findAllItems();
-
-        return itemEntities.stream().map(Item::new).collect(Collectors.toList());
+        return itemService.findAllItem();
     }
 
     @PostMapping("/items")
     public String registerItem(@RequestBody ItemBody itemBody) {
-        ItemEntity itemEntity = new ItemEntity(null, itemBody.getName(), itemBody.getType(), itemBody.getPrice(), itemBody.getSpec().getCpu(), itemBody.getSpec().getCapacity());
-        Integer itemId = itemRepository.saveItem(itemEntity);
-
-        return "ID: " + itemId;
+        return "ID: " + itemService.saveItem(itemBody);
     }
 
     @GetMapping("/items/{id}")
     public Item findItemByPathId(@PathVariable String id) {
-        Item itemFounded = items.stream()
-                                .filter((item -> item.getId().equals(id)))
-                                .findFirst()
-                                .orElseThrow(() -> new RuntimeException());
-
-        return itemFounded;
+        return itemService.findItemById(id);
     }
 
     @GetMapping("/items-query")
     public Item findItemByQueryId(@RequestParam("id") String id) {
-        Item itemFounded = items.stream()
-                .filter((item -> item.getId().equals(id)))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException());
-
-        return itemFounded;
+        return itemService.findItemById(id);
     }
 
     @GetMapping("/items-queries")
-    public List<Item> findItemByQueryIds(@RequestParam("id") List<String> ids) {
-        Set<String> idSet = ids.stream().collect(Collectors.toSet());
-
-        List<Item> itemsFound = items.stream()
-                .filter((item -> idSet.contains(item.getId())))
-                .collect(Collectors.toList());
-
-        return itemsFound;
+    public List<Item> findItemsByQueryIds(@RequestParam("id") List<String> ids) {
+        return itemService.findItemsByIds(ids);
     }
 
     @DeleteMapping("/items/{id}")
     public String DeleteItemByPathId(@PathVariable String id) {
-        Item itemFounded = items.stream()
-                .filter((item -> item.getId().equals(id)))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException());
-
-        items.remove(itemFounded);
-
-        return "Object with id = " + itemFounded.getId() +"(" + itemFounded.getName() + ") " + "has been deleted!!";
+        itemService.deleteItem(id);
+        return "Object with id = " + id + " has been deleted!!";
     }
 
     @PutMapping("/items/{id}")
     public Item updateItem(@PathVariable String id, @RequestBody ItemBody itemBody) {
-//        Item itemFounded = items.stream()
-//                .filter((item -> item.getId().equals(id)))
-//                .findFirst()
-//                .orElseThrow(() -> new RuntimeException());
-//
-//        items.remove(itemFounded);
-//
-//        Item itemUpdated = new Item(Integer.valueOf(id), itemBody);
-//        items.add(itemUpdated);
-
-        Integer idInt = Integer.valueOf(id);
-        ItemEntity itemEntity = new ItemEntity(idInt, itemBody.getName(), itemBody.getType(), itemBody.getPrice(), itemBody.getSpec().getCpu(), itemBody.getSpec().getCapacity());
-
-        ItemEntity itemEntityUpdated = itemRepository.updateItem(idInt, itemEntity);
-        Item itemUpdated = new Item(itemEntityUpdated);
-
-        return itemUpdated;
+        return itemService.updateItem(id, itemBody);
     }
 }
