@@ -14,4 +14,8 @@ public interface ItemRepository {
     Integer saveItem(ItemEntity itemEntity);
 
     ItemEntity updateItem(Integer idInt, ItemEntity itemEntity);
+
+    ItemEntity findItemById(Integer idInt);
+
+    void deleteItem(Integer idInt);
 }

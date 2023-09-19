@@ -2,6 +2,7 @@ package com.crud.miniproject.repository;
 
 import com.crud.miniproject.web.dto.Item;
 import com.crud.miniproject.web.dto.ItemBody;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Primary
 @Repository
 public class ItemJdbcDao implements ItemRepository {
 
@@ -31,13 +33,12 @@ public class ItemJdbcDao implements ItemRepository {
 
     @Override
     public List<ItemEntity> findAllItems() {
-
         return jdbcTemplate.query("SELECT * FROM items", itemEntityRowMapper);
     }
 
     @Override
     public Integer saveItem(ItemEntity itemEntity) {
-        jdbcTemplate.update("INSERT INTO items(name, type, price, cpu, capacity) VALUES (?, ?, ?, ?, ?)",
+        jdbcTemplate.update("INSERT INTO items(name, type, price, cpu, capacity) VALUES(?, ?, ?, ?, ?)",
                 itemEntity.getName(),
                 itemEntity.getType(),
                 itemEntity.getPrice(),
@@ -45,9 +46,19 @@ public class ItemJdbcDao implements ItemRepository {
                 itemEntity.getCapacity()
         );
 
-        ItemEntity itemEntityFound = jdbcTemplate.queryForObject("SELECT * FROM item WHERE name = ?", itemEntityRowMapper, itemEntity.getName());
+        ItemEntity itemEntityFound = jdbcTemplate.queryForObject("SELECT * FROM items WHERE name=?", itemEntityRowMapper, itemEntity.getName());
 
         return itemEntityFound.getId();
+    }
+
+    @Override
+    public ItemEntity findItemById(Integer idInt) {
+        return jdbcTemplate.queryForObject("SELECT * FROM items WHERE id=?", itemEntityRowMapper, idInt);
+    }
+
+    @Override
+    public void deleteItem(Integer idInt) {
+        jdbcTemplate.update("DELETE FROM items WHERE id=?", idInt);
     }
 
     @Override
@@ -61,6 +72,6 @@ public class ItemJdbcDao implements ItemRepository {
                 idInt
         );
 
-        return jdbcTemplate.queryForObject("SELECT * FROM items WHERE id = ?", itemEntityRowMapper,idInt);
+        return jdbcTemplate.queryForObject("SELECT * FROM items WHERE id = ?", itemEntityRowMapper, idInt);
     }
 }
