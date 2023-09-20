@@ -1,12 +1,7 @@
-package com.crud.miniproject.repository;
+package com.crud.miniproject.repository.items;
 
-import com.crud.miniproject.web.dto.Item;
-import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,6 +38,11 @@ public class ItemJavaListDao implements ItemRepository {
 
     @Override
     public void deleteItem(Integer idInt) {
+
+    }
+
+    @Override
+    public void updateItemStock(Integer itemId, Integer finalStock) {
 
     }
 

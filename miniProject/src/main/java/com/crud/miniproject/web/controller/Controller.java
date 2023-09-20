@@ -1,17 +1,12 @@
 package com.crud.miniproject.web.controller;
 
-import com.crud.miniproject.repository.ItemEntity;
-import com.crud.miniproject.repository.ItemRepository;
 import com.crud.miniproject.service.ItemService;
+import com.crud.miniproject.web.dto.BuyOrder;
 import com.crud.miniproject.web.dto.Item;
 import com.crud.miniproject.web.dto.ItemBody;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -57,5 +52,11 @@ public class Controller {
     @PutMapping("/items/{id}")
     public Item updateItem(@PathVariable String id, @RequestBody ItemBody itemBody) {
         return itemService.updateItem(id, itemBody);
+    }
+
+    @PostMapping("/items/buy")
+    public String buyItem(@RequestBody BuyOrder buyOrder) {
+        Integer orderItemNums = itemService.buyItems(buyOrder);
+        return "요청하신 Item 중 " + orderItemNums + " 개를 구매 하였습니다.";
     }
 }

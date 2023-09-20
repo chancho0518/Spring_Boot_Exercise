@@ -1,7 +1,5 @@
-package com.crud.miniproject.repository;
+package com.crud.miniproject.repository.items;
 
-import com.crud.miniproject.web.dto.Item;
-import com.crud.miniproject.web.dto.ItemBody;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,4 +16,6 @@ public interface ItemRepository {
     ItemEntity findItemById(Integer idInt);
 
     void deleteItem(Integer idInt);
+
+    void updateItemStock(Integer itemId, Integer finalStock);
 }

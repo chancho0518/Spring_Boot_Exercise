@@ -1,6 +1,6 @@
 package com.crud.miniproject.web.dto;
 
-import com.crud.miniproject.repository.ItemEntity;
+import com.crud.miniproject.repository.items.ItemEntity;
 
 import java.util.Objects;
 
