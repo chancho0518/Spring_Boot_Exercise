@@ -7,6 +7,7 @@ import com.crud.miniproject.repository.storeSales.StoreSalesRepository;
 import com.crud.miniproject.web.dto.BuyOrder;
 import com.crud.miniproject.web.dto.Item;
 import com.crud.miniproject.web.dto.ItemBody;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,15 +15,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ItemService {
 
-    private ItemRepository itemRepository;
-    private StoreSalesRepository storeSalesRepository;
-
-    public ItemService(ItemRepository itemRepository, StoreSalesRepository storeSalesRepository) {
-        this.itemRepository = itemRepository;
-        this.storeSalesRepository = storeSalesRepository;
-    }
+    private final ItemRepository itemRepository;
+    private final StoreSalesRepository storeSalesRepository;
 
     public List<Item> findAllItem() {
         List<ItemEntity> itemEntities = itemRepository.findAllItems();
