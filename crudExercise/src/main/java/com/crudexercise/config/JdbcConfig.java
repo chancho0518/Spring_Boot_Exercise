@@ -16,7 +16,7 @@ public class JdbcConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUsername("root");
-        dataSource.setPassword("Lee98454661!");
+        dataSource.setPassword("");
         dataSource.setUrl("jdbc:mysql://localhost:3306/flight_ticket_reservation?userUnicode=true&characterEncoding=UTF-8");
 
         return dataSource;
