@@ -18,3 +18,4 @@ VALUES
     ('Dell XPS 15', 'Laptop', 2290000, 'Intel Core i9', '1TB SSD'),
     ('Sony Alpha 7 III', 'Mirrorless Camera', 2590000, 'BIONZ X', 'No internal storage'),
     ('Microsoft Xbox Series X', 'Gaming Console', 499000, 'Custom AMD Zen 2', '1TB SSD');
+    
